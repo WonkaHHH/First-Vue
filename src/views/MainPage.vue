@@ -21,6 +21,7 @@
         v-if="modal.show"
         class="modal"
         :style="{ top: modal.top + 'px', left: modal.left + 'px' }"
+        @mousedown="startDrag($event, modal)"
       >
         <div class="modal-content">
           <span class="close" @click="closeAppModal(modal.id)">&times;</span>
@@ -39,6 +40,9 @@ export default {
   setup() {
     const router = useRouter();
     const modals = reactive([]);
+    const isDragging = ref(false);
+    const dragOffset = ref({ x: 0, y: 0 });
+    const currentModal = ref(null);
 
     const goToHomePage = () => {
       router.push({ name: 'WelcomePage' });
@@ -65,7 +69,33 @@ export default {
       }
     };
 
-    return { goToHomePage, goToApp, openAppModal, closeAppModal, modals };
+    const startDrag = (event, modal) => {
+      isDragging.value = true;
+      currentModal.value = modal;
+      dragOffset.value = {
+        x: event.clientX - modal.left,
+        y: event.clientY - modal.top
+      };
+      document.addEventListener('mousemove', onDragging);
+      document.addEventListener('mouseup', endDrag);
+    };
+
+    const onDragging = (event) => {
+      if (isDragging.value) {
+        const { clientX, clientY } = event;
+        const { x, y } = dragOffset.value;
+        currentModal.value.left = clientX - x;
+        currentModal.value.top = clientY - y;
+      }
+    };
+
+    const endDrag = () => {
+      isDragging.value = false;
+      document.removeEventListener('mousemove', onDragging);
+      document.removeEventListener('mouseup', endDrag);
+    };
+
+    return { goToHomePage, goToApp, openAppModal, closeAppModal, modals, startDrag };
   },
 };
 </script>
