@@ -26,7 +26,6 @@
   <el-row :gutter="20" justify="end" align="center">
     <el-text>version 0.3.0</el-text>
   </el-row>
-  
 </template>
 
 
@@ -54,3 +53,12 @@ export default {
 };
 
 </script>
+
+
+<style lang="scss">
+.el-row {
+  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+</style>
