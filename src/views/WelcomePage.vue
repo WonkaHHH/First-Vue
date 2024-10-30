@@ -57,8 +57,8 @@ export default {
 
 <style lang="scss">
 .el-row {
+  width:80%;
   margin-bottom: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
+  left: 10%;
 }
 </style>
