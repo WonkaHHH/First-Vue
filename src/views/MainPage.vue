@@ -57,12 +57,17 @@ export default {
       modals.push(newModal);
     };
 
-    const closeAppModal = (id) => {
-      const index = modals.findIndex(modal => modal.id === id);
-      if (index > -1) {
-        modals.splice(index, 1);
-      }
-    };
+const closeAppModal = (id) => {
+  const index = modals.findIndex(modal => modal.id === id);
+  if (index > -1) {
+    modals.splice(index, 1);
+    // 如果当前正在拖动的窗口被关闭，需要重置 dragging 和 currentModal 的状态
+    if (currentModal && currentModal.id === id) {
+      dragging = false;
+      currentModal = null;
+    }
+  }
+};
 
     let dragging = false;
     let currentModal = null;
