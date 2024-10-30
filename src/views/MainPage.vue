@@ -4,33 +4,57 @@
     <el-button type="primary" @click="goToHomePage">退出游戏</el-button>
     <!-- Dock栏 -->
     <div class="dock">
-      <div class="dock-item" @click="goToApp(1)">
+      <div class="dock-item" @click="openAppModal(1)">
         <span>📂</span> <!-- 颜文字图标 -->
         <span>App 1</span>
       </div>
-      <div class="dock-item" @click="goToApp(2)">
+      <div class="dock-item" @click="openAppModal(2)">
         <span>📄</span> <!-- 颜文字图标 -->
         <span>App 2</span>
       </div>
       <!-- 根据需要添加更多的dock项 -->
     </div>
+    <!-- 动态组件用于显示窗口 -->
+    <transition name="modal">
+      <div v-if="showModal" class="modal">
+        <div class="modal-content">
+          <span class="close" @click="closeAppModal">&times;</span>
+          <p>这里是应用内容</p>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 
 export default {
   setup() {
     const router = useRouter();
+    const showModal = ref(false);
+    const currentAppId = ref(null);
+
     const goToHomePage = () => {
       router.push({ name: 'WelcomePage' });
     };
+
+    const openAppModal = (appId) => {
+      currentAppId.value = appId;
+      showModal.value = true;
+    };
+
+    const closeAppModal = () => {
+      showModal.value = false;
+    };
+
     const goToApp = (appId) => {
       // 根据appId跳转到不同的应用页面
       console.log('Go to App', appId);
     };
-    return { goToHomePage, goToApp };
+
+    return { goToHomePage, goToApp, openAppModal, closeAppModal, showModal };
   },
 };
 </script>
@@ -71,5 +95,33 @@ export default {
 
 .dock-item span:last-child {
   font-size: 12px;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.close {
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
 }
 </style>
