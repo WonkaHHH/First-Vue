@@ -15,11 +15,12 @@
       <!-- 根据需要添加更多的dock项 -->
     </div>
     <!-- 动态组件用于显示窗口 -->
-    <transition name="modal">
-      <div v-if="showModal" class="modal">
-        <div class="modal-content">
-          <span class="close" @click="closeAppModal">&times;</span>
-          <p>这里是应用内容</p>
+    <transition name="modal" v-for="modal in modals" :key="modal.id">
+      <div v-if="modal.show" class="modal" :style="{ top: modal.top + 'px', left: modal.left + 'px' }"
+           @mousedown="dragStart(modal, $event)">
+        <div class="modal-content" @mouseup="dragEnd" @mouseleave="dragEnd">
+          <span class="close" @click="closeAppModal(modal.id)">&times;</span>
+          <p>这里是应用{{ modal.id }}的内容</p>
         </div>
       </div>
     </transition>
@@ -28,100 +29,72 @@
 
 <script>
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { reactive, ref, onMounted, onUnmounted } from 'vue';
 
 export default {
   setup() {
     const router = useRouter();
-    const showModal = ref(false);
-    const currentAppId = ref(null);
+    const modals = reactive([]);
+    const dragMove = ref(null); // 使用 ref 存储 dragMove 方法的引用
 
     const goToHomePage = () => {
       router.push({ name: 'WelcomePage' });
     };
 
-    const openAppModal = (appId) => {
-      currentAppId.value = appId;
-      showModal.value = true;
-    };
-
-    const closeAppModal = () => {
-      showModal.value = false;
-    };
-
     const goToApp = (appId) => {
-      // 根据appId跳转到不同的应用页面
-      console.log('Go to App', appId);
+      // 根据 appId 导航到不同的应用页面
+      // 例如：
+      router.push({ name: 'AppPage', params: { appId } });
     };
 
-    return { goToHomePage, goToApp, openAppModal, closeAppModal, showModal };
+    const openAppModal = (appId) => {
+      const newModal = {
+        id: appId,
+        show: true,
+        top: 100,
+        left: 100
+      };
+      modals.push(newModal);
+    };
+
+    const closeAppModal = (id) => {
+      const index = modals.findIndex(modal => modal.id === id);
+      if (index > -1) {
+        modals.splice(index, 1);
+      }
+    };
+
+    let dragging = false;
+    let currentModal = null;
+
+    const dragStart = (modal, event) => {
+      dragging = true;
+      currentModal = modal;
+    };
+
+    const dragEnd = () => {
+      dragging = false;
+      currentModal = null;
+    };
+
+    dragMove.value = (event) => {
+      if (dragging) {
+        const { clientX, clientY } = event;
+        const { top, left } = currentModal;
+        currentModal.left = clientX - 10 + left;
+        currentModal.top = clientY - 10 + top;
+      }
+    };
+
+    onMounted(() => {
+      document.addEventListener('mousemove', dragMove.value);
+    });
+
+    onUnmounted(() => {
+      document.removeEventListener('mousemove', dragMove.value);
+    });
+
+    return { goToHomePage, goToApp, openAppModal, closeAppModal, modals };
   },
 };
 </script>
-
-<style>
-.second-page {
-  text-align: center;
-  padding: 50px;
-  position: relative;
-  margin-bottom: 50px;
-}
-
-.dock {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #eee;
-  padding: 10px 0;
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
-}
-
-.dock-item {
-  margin: 0 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer; /* 添加鼠标悬停时的手形指针 */
-}
-
-.dock-item span:first-child {
-  font-size: 24px; /* 颜文字图标大小 */
-  margin-bottom: 5px; /* 颜文字与文字的间距 */
-}
-
-.dock-item span:last-child {
-  font-size: 12px;
-}
-
-.modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  width: 80%;
-  max-width: 400px;
-  text-align: center;
-}
-
-.close {
-  float: right;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-}
-</style>
