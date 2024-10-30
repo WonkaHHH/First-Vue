@@ -5,19 +5,25 @@
     <!-- Dock栏 -->
     <div class="dock">
       <div class="dock-item" @click="openAppModal(1)">
-        <span>📂</span> <!-- 颜文字图标 -->
+        <i class="fa fa-folder"></i> <!-- 使用Font Awesome图标 -->
         <span>App 1</span>
       </div>
       <div class="dock-item" @click="openAppModal(2)">
-        <span>📄</span> <!-- 颜文字图标 -->
+        <i class="fa fa-file"></i> <!-- 使用Font Awesome图标 -->
         <span>App 2</span>
       </div>
       <!-- 根据需要添加更多的dock项 -->
     </div>
+
     <!-- 动态组件用于显示窗口 -->
     <transition name="modal" v-for="modal in modals" :key="modal.id">
-      <div v-if="modal.show" class="modal" :style="{ top: modal.top + 'px', left: modal.left + 'px' }"
-           @mousedown="dragStart(modal, $event)">
+      <div
+        v-if="modal.show"
+        class="modal"
+        :style="{ top: modal.top + 'px', left: modal.left + 'px' }"
+        @mousedown="dragStart(modal, $event)"
+        @mousemove="dragMove($event)"
+      >
         <div class="modal-content" @mouseup="dragEnd" @mouseleave="dragEnd">
           <span class="close" @click="closeAppModal(modal.id)">&times;</span>
           <p>这里是应用{{ modal.id }}的内容</p>
@@ -35,15 +41,14 @@ export default {
   setup() {
     const router = useRouter();
     const modals = reactive([]);
-    const dragMove = ref(null); // 使用 ref 存储 dragMove 方法的引用
+    const dragging = ref(false); // 跟踪是否正在拖拽
+    const currentModal = ref(null); // 当前被拖拽的窗口
 
     const goToHomePage = () => {
       router.push({ name: 'WelcomePage' });
     };
 
     const goToApp = (appId) => {
-      // 根据 appId 导航到不同的应用页面
-      // 例如：
       router.push({ name: 'AppPage', params: { appId } });
     };
 
@@ -57,49 +62,73 @@ export default {
       modals.push(newModal);
     };
 
-const closeAppModal = (id) => {
-  const index = modals.findIndex(modal => modal.id === id);
-  if (index > -1) {
-    modals.splice(index, 1);
-    // 如果当前正在拖动的窗口被关闭，需要重置 dragging 和 currentModal 的状态
-    if (currentModal && currentModal.id === id) {
-      dragging = false;
-      currentModal = null;
-    }
-  }
-};
-
-    let dragging = false;
-    let currentModal = null;
+    const closeAppModal = (id) => {
+      const index = modals.findIndex(modal => modal.id === id);
+      if (index > -1) {
+        modals.splice(index, 1);
+        if (currentModal.value && currentModal.value.id === id) {
+          dragging.value = false;
+          currentModal.value = null;
+        }
+      }
+    };
 
     const dragStart = (modal, event) => {
-      dragging = true;
-      currentModal = modal;
+      dragging.value = true;
+      currentModal.value = modal;
     };
 
     const dragEnd = () => {
-      dragging = false;
-      currentModal = null;
+      dragging.value = false;
+      currentModal.value = null;
     };
 
-    dragMove.value = (event) => {
-      if (dragging) {
+    const dragMove = (event) => {
+      if (dragging.value && currentModal.value) {
         const { clientX, clientY } = event;
-        const { top, left } = currentModal;
-        currentModal.left = clientX - 10 + left;
-        currentModal.top = clientY - 10 + top;
+        const { top, left } = currentModal.value;
+        currentModal.value.left = left + clientX - event.pageXOffset - event.target.offsetLeft;
+        currentModal.value.top = top + clientY - event.pageYOffset - event.target.offsetTop;
       }
     };
 
     onMounted(() => {
-      document.addEventListener('mousemove', dragMove.value);
+      document.addEventListener('mousemove', dragMove);
     });
 
     onUnmounted(() => {
-      document.removeEventListener('mousemove', dragMove.value);
+      document.removeEventListener('mousemove', dragMove);
     });
 
-    return { goToHomePage, goToApp, openAppModal, closeAppModal, modals };
+    return { goToHomePage, goToApp, openAppModal, closeAppModal, modals, dragStart, dragEnd };
   },
 };
 </script>
+
+
+<style>
+.dock {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #eee; /* macOS Dock的背景色 */
+  padding: 10px;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.2); /* 阴影效果 */
+}
+
+.dock-item {
+  margin-right: 10px; /* 项目之间的间距 */
+  cursor: pointer;
+}
+
+.dock-item i {
+  font-size: 2em; /* 图标大小 */
+  margin-bottom: 5px; /* 图标和文本之间的间距 */
+}
+
+.dock-item span {
+  font-size: 0.8em; /* 文本大小 */
+}
+</style>
