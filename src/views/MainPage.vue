@@ -16,7 +16,7 @@
     </div>
 
     <!-- 动态组件用于显示窗口 -->
-    <transition name="modal" v-for="modal in modals" :key="modal.id">
+    <transition name="modal" v-for="modal in modals" :key="modal.id" class="modal">
       <div
         v-if="modal.show"
         class="modal"
@@ -95,5 +95,15 @@ export default {
 
 .dock-item span {
   font-size: 0.8em; /* 文本大小 */
+}
+
+.modal {
+  position: fixed; /* 固定定位，以便能够通过 top 和 left 属性定位 */
+  border: 1px solid #ccc; /* 添加1像素的边框，颜色为 #ccc */
+  background-color: white; /* 背景颜色为白色 */
+  padding: 20px; /* 内边距 */
+  border-radius: 5px; /* 边框圆角 */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 轻微的阴影效果 */
+  z-index: 1000; /* 确保模态框在其他元素之上 */
 }
 </style>
