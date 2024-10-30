@@ -9,54 +9,39 @@
   </div>
 
   <div>
-    <!-- 触发按钮 -->
-    <el-button type="primary" @click="showDialog">查看公告</el-button>
-
-    <!-- 公告栏对话框 -->
-    <el-dialog
-      title="公告"
-      :visible.sync="dialogVisible"
-      width="30%"
-      @close="handleClose"
-    >
-      <!-- 公告内容 -->
-      <p>这里是公告内容，可以是文本、图片等。</p>
-      <!-- 可以添加更多的公告内容 -->
-      
-      <!-- 对话框底部 -->
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
+  <el-button type="primary" @click="dialogVisible = true">游戏公告</el-button>
+  <el-dialog v-model="dialogVisible" title="游戏公告" width="500" draggable>
+    <span>内容内容内容内容</span>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
+      </div>
+    </template>
+  </el-dialog>
   </div>
 
 </template>
 
+
 <script>
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 
 export default {
   setup() {
     const router = useRouter();
+    const dialogVisible = ref(false); // 定义响应式数据
+
     const goToSecondPage = () => {
       router.push({ name: 'MainPage' });
     };
-    const showDialog = () => {
-      this.dialogVisible = true;
+
+    const openDialog = () => {
+      dialogVisible.value = true; // 打开弹窗
     };
-    return { goToSecondPage, showDialog };
-  },
-  data() {
-    return {
-      dialogVisible: false, // 控制对话框的显示与隐藏
-    };
-  },
-  methods: {
-    handleClose() {
-      // 对话框关闭时执行的逻辑
-      console.log('公告栏已关闭');
-    },
+
+    return { goToSecondPage, dialogVisible, openDialog }; // 返回响应式数据和方法
   },
 };
 </script>
