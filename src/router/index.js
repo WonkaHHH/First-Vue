@@ -4,9 +4,14 @@ import { createRouter, createWebHashHistory } from "vue-router";
 const routes = [
     {
         path: '/',
-        name: 'Home',
-        component: () => import('../views/Home.vue')
-    }
+        name: 'WelcomePage',
+        component: () => import('../views/WelcomePage.vue')
+    },
+    {
+      path: '/',
+      name: 'MainPage',
+      component: () => import('../views/MainPage.vue')
+    },
 ]
 
 const router = createRouter({
