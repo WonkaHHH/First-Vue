@@ -21,10 +21,8 @@
         v-if="modal.show"
         class="modal"
         :style="{ top: modal.top + 'px', left: modal.left + 'px' }"
-        @mousedown="dragStart(modal, $event)"
-        @mousemove="dragMove($event)"
       >
-        <div class="modal-content" @mouseup="dragEnd" @mouseleave="dragEnd">
+        <div class="modal-content">
           <span class="close" @click="closeAppModal(modal.id)">&times;</span>
           <p>这里是应用{{ modal.id }}的内容</p>
         </div>
@@ -35,14 +33,12 @@
 
 <script>
 import { useRouter } from 'vue-router';
-import { reactive, ref, onMounted, onUnmounted } from 'vue';
+import { reactive, ref } from 'vue';
 
 export default {
   setup() {
     const router = useRouter();
     const modals = reactive([]);
-    const dragging = ref(false); // 跟踪是否正在拖拽
-    const currentModal = ref(null); // 当前被拖拽的窗口
 
     const goToHomePage = () => {
       router.push({ name: 'WelcomePage' });
@@ -66,41 +62,10 @@ export default {
       const index = modals.findIndex(modal => modal.id === id);
       if (index > -1) {
         modals.splice(index, 1);
-        if (currentModal.value && currentModal.value.id === id) {
-          dragging.value = false;
-          currentModal.value = null;
-        }
       }
     };
 
-    const dragStart = (modal, event) => {
-      dragging.value = true;
-      currentModal.value = modal;
-    };
-
-    const dragEnd = () => {
-      dragging.value = false;
-      currentModal.value = null;
-    };
-
-    const dragMove = (event) => {
-      if (dragging.value && currentModal.value) {
-        const { clientX, clientY } = event;
-        const { top, left } = currentModal.value;
-        currentModal.value.left = left + clientX - event.pageXOffset - event.target.offsetLeft;
-        currentModal.value.top = top + clientY - event.pageYOffset - event.target.offsetTop;
-      }
-    };
-
-    onMounted(() => {
-      document.addEventListener('mousemove', dragMove);
-    });
-
-    onUnmounted(() => {
-      document.removeEventListener('mousemove', dragMove);
-    });
-
-    return { goToHomePage, goToApp, openAppModal, closeAppModal, modals, dragStart, dragEnd };
+    return { goToHomePage, goToApp, openAppModal, closeAppModal, modals };
   },
 };
 </script>
