@@ -1,7 +1,7 @@
 <template>
   <div class="second-page">
-    <h1>Second Page</h1>
-    <el-button type="primary" @click="goToHomePage">Go Back to Home Page</el-button>
+    <el-button type="primary" @click="goToHomePage">回到菜单</el-button>
+    <el-button type="primary" @click="goToHomePage">退出游戏</el-button>
     <!-- Dock栏 -->
     <div class="dock">
       <div class="dock-item" @click="goToApp(1)">
