@@ -12,7 +12,7 @@
 
   <el-row :gutter="20" justify="end" align="center">
   <el-button type="primary" @click="dialogVisible = true">公告</el-button>
-  <el-dialog v-model="dialogVisible" title="公告" width="500" draggable>
+  <el-dialog v-model="dialogVisible" title="公告" :modal="false" :close-on-click-modal="false" draggable>
     <div>一些版本更新信息</div>
     <div>QQ群号：</div>
     <div>QQ群号二维码</div>
