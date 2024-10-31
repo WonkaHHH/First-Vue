@@ -1,9 +1,9 @@
 <template>
 <el-row class="full-screen-center">
 
-  <el-row :gutter="20" justify="start" align="center">
-    <h1>Cabbage Engine</h1>
-  </el-row>
+<!--  <el-row :gutter="20" justify="start" align="center">-->
+<!--    <h1>Cabbage Engine</h1>-->
+<!--  </el-row>-->
 
 <el-row :gutter="20" type="flex" class="column" justify="start" align="center">
   <el-col :gutter="20">
@@ -108,7 +108,7 @@ export default {
 }
 .custom-button {
   margin: 5px; /* 上下左右各10px的间距 */
-  background-color: rgba(192, 192, 192, 0.5);
+  background-image: url('button_background.png');
   border-color: transparent; 
   color: white;
   width: 13%; /* 设置对话框宽度为视口宽度的50% */
@@ -131,7 +131,7 @@ export default {
     height: 100vh; /* 容器高度设置为视口高度 */
     margin: 0; /* 移除默认的外边距 */
     padding: 5vh; /* 四周添加5%的间隔 */
-    background-image: url('background.jpeg');
+    background-image: url('background.png');
     background-size: cover;
     background-position: center center;
     background-attachment: fixed; /* 保持背景固定 */
@@ -142,8 +142,8 @@ export default {
   height: 50%; /* 设置对话框高度为视口高度的60% */
   position: fixed; /* 固定定位 */
   top: 5%; /* 距离顶部20%的位置 */
-  left: 75%; /* 距离左侧25%的位置 */
-  background-color: rgba(0, 0, 0, 0.5);
+  left: 72%; /* 距离左侧25%的位置 */
+  background-color: rgba(255, 255, 255, 0.6);
   border-color: transparent;
 
 }
