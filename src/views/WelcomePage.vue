@@ -1,26 +1,27 @@
 <template>
+<el-row class="full-screen-center">
   <el-row :gutter="20" justify="center" align="center">
     <h1>Cabbage Engine</h1>
   </el-row>
 
   <el-row :gutter="20" justify="start" align="center">
-    <el-button type="primary" @click="goToSecondPage">继续游戏</el-button>
+    <el-button type="primary" @click="goToSecondPage" size="large">继续游戏</el-button>
   </el-row>
   <el-row :gutter="20" justify="start" align="center">
-    <el-button type="primary" @click="goToSecondPage">新建游戏</el-button>
+    <el-button type="primary" @click="goToSecondPage" size="large">新建游戏</el-button>
   </el-row>
   <el-row :gutter="20" justify="start" align="center">
-    <el-button type="primary" @click="uploadFile">加载游戏</el-button>
+    <el-button type="primary" @click="uploadFile" size="large">加载游戏</el-button>
   </el-row>
   <el-row :gutter="20" justify="start" align="center">
-    <el-button type="primary">游戏设置</el-button>
+    <el-button type="primary" size="large">游戏设置</el-button>
   </el-row>
   <el-row :gutter="20" justify="start" align="center">
-    <el-button type="primary">退出游戏</el-button>
+    <el-button type="primary" size="large">退出游戏</el-button>
   </el-row>
 
   <el-row :gutter="20" justify="end" align="center">
-    <el-button type="primary" @click="dialogVisible = true">公告</el-button>
+    <el-button type="primary" @click="dialogVisible = true" size="large">公告</el-button>
     <el-dialog v-model="dialogVisible" title="公告" :modal="false" :close-on-click-modal="false" draggable
                :z-index="998">
       <div>一些版本更新信息</div>
@@ -30,8 +31,9 @@
   </el-row>
 
   <el-row :gutter="20" justify="end" align="center">
-    <el-text>version 0.3.0</el-text>
+    <el-text size="medium">version 0.3.0</el-text>
   </el-row>
+</el-row>
 </template>
 
 
@@ -83,13 +85,22 @@ export default {
 
 <style lang="scss">
 .el-row {
-  width: 80%;
+  width: 100%;
   margin-bottom: 20px;
-  left: 10%;
+  left: 0%;
 }
 
 .el-button {
   position: relative;
   z-index: 999;
+}
+
+.full-screen-center {
+    display: flex; /* 使用 Flexbox */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    height: 100vh; /* 容器高度设置为视口高度 */
+    margin: 0; /* 移除默认的外边距 */
+    padding: 5vh; /* 四周添加5%的间隔 */
 }
 </style>
