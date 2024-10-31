@@ -141,6 +141,8 @@ export default {
   position: fixed; /* 固定定位 */
   top: 5%; /* 距离顶部20%的位置 */
   left: 75%; /* 距离左侧25%的位置 */
+  background-color: rgba(0, 0, 0, 0.5);
+  border-color: transparent;
 }
 
 </style>
