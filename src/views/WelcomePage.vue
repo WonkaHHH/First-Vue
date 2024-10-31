@@ -6,23 +6,23 @@
 <!--  </el-row>-->
 
 <el-row :gutter="20" type="flex" class="column" justify="start" align="center" style="margin-top: 65px;">
-  <el-col :gutter="20">
+  <el-col :gutter="10">
     <el-button class="custom-button" type="primary" @click="goToSecondPage" size="large">继续游戏</el-button>
   </el-col>
-  <el-col :gutter="20">
+  <el-col :gutter="10">
     <el-button class="custom-button" type="primary" @click="goToSecondPage" size="large">新建游戏</el-button>
   </el-col>
-  <el-col :gutter="20">
+  <el-col :gutter="10">
     <el-button class="custom-button" type="primary" @click="uploadFile" size="large">加载游戏</el-button>
   </el-col>
-  <el-col :gutter="20">
+  <el-col :gutter="10">
     <el-button class="custom-button" type="primary" size="large">游戏设置</el-button>
   </el-col>
-  <el-col :gutter="20">
+  <el-col :gutter="10">
     <el-button class="custom-button" type="primary" size="large">退出游戏</el-button>
   </el-col>
 
-  <el-col :gutter="20">
+  <el-col :gutter="10">
     <el-button class="decorate-button" type="primary" size="large"></el-button>
   </el-col>
 </el-row>
@@ -112,12 +112,12 @@ export default {
 }
 .custom-button {
   background-color: rgba(0, 0, 0, 0.0);
-  margin: 3px; /* 上下左右各10px的间距 */
+  margin: 0px; /* 上下左右各10px的间距 */
   background-image: url('button_background.png');
   background-size: cover;
   border-color: transparent; 
   color: white;
-  width: 13%; /* 设置对话框宽度为视口宽度的50% */
+  width: 8%; /* 设置对话框宽度为视口宽度的50% */
   height: 50%; /* 设置对话框高度为视口高度的60% */
 }
 .el-button {
@@ -156,11 +156,11 @@ export default {
 
 .message-font {
   font-family: 'Fantasy', sans-serif;
-  color: white;
+  color: rgba(98,157,93,1.0);
 }
 
 .el-dialog__title {
-  color: white;
+  color: rgba(98,157,93,1.0);
   background-color: rgba(0, 0, 0, 0);
   border-color: transparent;
 }
