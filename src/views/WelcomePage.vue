@@ -1,7 +1,7 @@
 <template>
 <el-row class="full-screen-center">
 
-  <el-row :gutter="20" justify="center" align="center">
+  <el-row :gutter="20" justify="start" align="center">
     <h1>Cabbage Engine</h1>
   </el-row>
 
