@@ -24,19 +24,31 @@
 </el-row>
 
   <el-row type="flex" class="column" justify="end" align="center">
-  <el-col justify="center" align="end">
-    <el-button class="custom-button" type="primary" @click="dialogVisible = true" size="medium">公告</el-button>
-  </el-col>
+<!--  <el-col justify="center" align="end">-->
+<!--&lt;!&ndash;    <el-button class="custom-button" type="primary" @click="dialogVisible = true" size="medium">公告</el-button>&ndash;&gt;-->
+<!--  </el-col>-->
   <el-col justify="center" align="end">
     <el-text size="medium" class="custom-font">version 0.3.0</el-text>
   </el-col>
   </el-row>
 
-    <el-dialog v-model="dialogVisible" title="公告" :modal="false" :close-on-click-modal="false" draggable :z-index="998" class="my-custom-dialog">
-      <div>一些版本更新信息</div>
-      <div>QQ群号：</div>
-      <div>QQ群号二维码</div>
-    </el-dialog>
+  <el-dialog
+      v-model="dialogVisible"
+      title="公告"
+      :modal="false"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+      draggable
+      :z-index="998"
+      class="my-custom-dialog"
+      @before-close="handleClose">
+    <div>一些版本更新信息</div>
+    <div>QQ群号：</div>
+    <div>QQ群号二维码</div>
+  </el-dialog>
+
+
 
 </el-row>
 </template>
@@ -117,7 +129,7 @@ export default {
     height: 100vh; /* 容器高度设置为视口高度 */
     margin: 0; /* 移除默认的外边距 */
     padding: 5vh; /* 四周添加5%的间隔 */
-    background-image: url('background.jpg');
+    background-image: url('background.jpeg');
     background-size: cover;
     background-position: center center;
     background-attachment: fixed; /* 保持背景固定 */
