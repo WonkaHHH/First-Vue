@@ -21,6 +21,10 @@
   <el-col :gutter="20">
     <el-button class="custom-button" type="primary" size="large">退出游戏</el-button>
   </el-col>
+
+  <el-col :gutter="20">
+    <el-button class="decorate-button" type="primary" size="large"></el-button>
+  </el-col>
 </el-row>
 
   <el-row type="flex" class="column" justify="end" align="center">
@@ -28,7 +32,7 @@
 <!--&lt;!&ndash;    <el-button class="custom-button" type="primary" @click="dialogVisible = true" size="medium">公告</el-button>&ndash;&gt;-->
 <!--  </el-col>-->
   <el-col justify="center" align="end">
-    <el-text size="medium" class="custom-font">version 0.3.0</el-text>
+    <el-text size="medium" class="custom-font" style="margin-top: 5px;">version 0.3.0</el-text>
   </el-col>
   </el-row>
 
@@ -159,6 +163,17 @@ export default {
   background-color: rgba(0, 0, 0, 0);
   border-color: transparent;
 }
+
+.decorate-button {
+  margin: 10px; /* 上下左右各10px的间距 */
+  background-image: url('small_button.png');
+  background-size: cover;
+  border-color: transparent;
+  color: white;
+  width: 13%; /* 设置对话框宽度为视口宽度的50% */
+  height: 50%; /* 设置对话框高度为视口高度的60% */
+}
+
 
 
 </style>
