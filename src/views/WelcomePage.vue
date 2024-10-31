@@ -111,7 +111,8 @@ export default {
   left: 0%;
 }
 .custom-button {
-  margin: 10px; /* 上下左右各10px的间距 */
+  background-color: rgba(0, 0, 0, 0.0);
+  margin: 3px; /* 上下左右各10px的间距 */
   background-image: url('button_background.png');
   background-size: cover;
   border-color: transparent; 
@@ -165,6 +166,7 @@ export default {
 }
 
 .decorate-button {
+  background-color: rgba(0, 0, 0, 0.0);
   margin: 10px; /* 上下左右各10px的间距 */
   background-image: url('small_button.png');
   background-size: cover;
