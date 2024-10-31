@@ -1,22 +1,31 @@
 <template>
-
   <el-row :gutter="20" justify="center" align="center">
     <h1>Cabbage Engine</h1>
   </el-row>
 
-  <el-row :gutter="20" justify="start" align="center"> <el-button type="primary" @click="goToSecondPage">继续游戏</el-button> </el-row>
-  <el-row :gutter="20" justify="start" align="center"> <el-button type="primary" @click="goToSecondPage">新建游戏</el-button> </el-row>
-  <el-row :gutter="20" justify="start" align="center"> <el-button type="primary" @click="goToSecondPage">加载游戏</el-button> </el-row>
-  <el-row :gutter="20" justify="start" align="center"> <el-button type="primary">游戏设置</el-button> </el-row>
-  <el-row :gutter="20" justify="start" align="center"> <el-button type="primary">退出游戏</el-button> </el-row>
+  <el-row :gutter="20" justify="start" align="center">
+    <el-button type="primary" @click="goToSecondPage">继续游戏</el-button>
+  </el-row>
+  <el-row :gutter="20" justify="start" align="center">
+    <el-button type="primary" @click="goToSecondPage">新建游戏</el-button>
+  </el-row>
+  <el-row :gutter="20" justify="start" align="center">
+    <el-button type="primary" @click="goToSecondPage">加载游戏</el-button>
+  </el-row>
+  <el-row :gutter="20" justify="start" align="center">
+    <el-button type="primary">游戏设置</el-button>
+  </el-row>
+  <el-row :gutter="20" justify="start" align="center">
+    <el-button type="primary">退出游戏</el-button>
+  </el-row>
 
   <el-row :gutter="20" justify="end" align="center">
-  <el-button type="primary" @click="dialogVisible = true">公告</el-button>
-  <el-dialog v-model="dialogVisible" title="公告" :modal="false" :close-on-click-modal="false" draggable>
-    <div>一些版本更新信息</div>
-    <div>QQ群号：</div>
-    <div>QQ群号二维码</div>
-  </el-dialog>
+    <el-button type="primary" @click="dialogVisible = true">公告</el-button>
+    <el-dialog v-model="dialogVisible" title="公告" :modal="false" :close-on-click-modal="false" draggable :z-index="998">
+      <div>一些版本更新信息</div>
+      <div>QQ群号：</div>
+      <div>QQ群号二维码</div>
+    </el-dialog>
   </el-row>
 
   <el-row :gutter="20" justify="end" align="center">
@@ -52,5 +61,9 @@ export default {
   width:80%;
   margin-bottom: 20px;
   left: 10%;
+}
+.el-button {
+  position: relative;
+  z-index: 999;
 }
 </style>
