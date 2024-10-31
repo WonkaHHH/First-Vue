@@ -5,7 +5,7 @@
     <h1>Cabbage Engine</h1>
   </el-row>
 
-<el-row :gutter="20" type="flex" class="column">
+<el-row :gutter="20" type="flex" class="column" justify="start" align="center">
   <el-col :span="24">
     <el-button type="primary" @click="goToSecondPage" size="large">继续游戏</el-button>
   </el-col>
@@ -23,20 +23,21 @@
   </el-col>
 </el-row>
 
-  <el-row :gutter="20" justify="end" align="center">
-  <el-col :span="24">
-    <el-button type="primary" @click="dialogVisible = true" size="large">公告</el-button>
+  <el-row type="flex" class="column" justify="end" align="center">
+  <el-col justify="center" align="end">
+    <el-button type="primary" @click="dialogVisible = true" size="medium">公告</el-button>
   </el-col>
-  <el-col :span="24">
+  <el-col justify="center" align="end">
     <el-text size="medium">version 0.3.0</el-text>
   </el-col>
+  </el-row>
+
     <el-dialog v-model="dialogVisible" title="公告" :modal="false" :close-on-click-modal="false" draggable
                :z-index="998">
       <div>一些版本更新信息</div>
       <div>QQ群号：</div>
       <div>QQ群号二维码</div>
     </el-dialog>
-  </el-row>
 
 </el-row>
 </template>
