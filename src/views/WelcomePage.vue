@@ -6,34 +6,33 @@
   </el-row>
 
 <el-row :gutter="20" type="flex" class="column" justify="start" align="center">
-  <el-col :span="24">
-    <el-button type="primary" @click="goToSecondPage" size="large">继续游戏</el-button>
+  <el-col :gutter="20">
+    <el-button class="custom-button" type="primary" @click="goToSecondPage" size="large">继续游戏</el-button>
   </el-col>
-  <el-col :span="24">
-    <el-button type="primary" @click="goToSecondPage" size="large">新建游戏</el-button>
+  <el-col :gutter="20">
+    <el-button class="custom-button" type="primary" @click="goToSecondPage" size="large">新建游戏</el-button>
   </el-col>
-  <el-col :span="24">
-    <el-button type="primary" @click="uploadFile" size="large">加载游戏</el-button>
+  <el-col :gutter="20">
+    <el-button class="custom-button" type="primary" @click="uploadFile" size="large">加载游戏</el-button>
   </el-col>
-  <el-col :span="24">
-    <el-button type="primary" size="large">游戏设置</el-button>
+  <el-col :gutter="20">
+    <el-button class="custom-button" type="primary" size="large">游戏设置</el-button>
   </el-col>
-  <el-col :span="24">
-    <el-button type="primary" size="large">退出游戏</el-button>
+  <el-col :gutter="20">
+    <el-button class="custom-button" type="primary" size="large">退出游戏</el-button>
   </el-col>
 </el-row>
 
   <el-row type="flex" class="column" justify="end" align="center">
   <el-col justify="center" align="end">
-    <el-button type="primary" @click="dialogVisible = true" size="medium">公告</el-button>
+    <el-button class="custom-button" type="primary" @click="dialogVisible = true" size="medium">公告</el-button>
   </el-col>
   <el-col justify="center" align="end">
-    <el-text size="medium">version 0.3.0</el-text>
+    <el-text size="medium" class="custom-font">version 0.3.0</el-text>
   </el-col>
   </el-row>
 
-    <el-dialog v-model="dialogVisible" title="公告" :modal="false" :close-on-click-modal="false" draggable
-               :z-index="998">
+    <el-dialog v-model="dialogVisible" title="公告" :modal="false" :close-on-click-modal="false" draggable :z-index="998" class="my-custom-dialog">
       <div>一些版本更新信息</div>
       <div>QQ群号：</div>
       <div>QQ群号二维码</div>
@@ -95,10 +94,20 @@ export default {
   margin-bottom: 20px;
   left: 0%;
 }
-
+.custom-button {
+  margin: 5px; /* 上下左右各10px的间距 */
+  background-color: rgba(192, 192, 192, 0.5);
+  border-color: transparent; 
+  color: white;
+}
 .el-button {
   position: relative;
   z-index: 999;
+}
+
+.custom-font {
+  font-family: 'Fantasy', sans-serif;
+  color: rgba(192, 192, 192, 0.5);
 }
 
 .full-screen-center {
@@ -108,5 +117,18 @@ export default {
     height: 100vh; /* 容器高度设置为视口高度 */
     margin: 0; /* 移除默认的外边距 */
     padding: 5vh; /* 四周添加5%的间隔 */
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed; /* 保持背景固定 */
 }
+
+.my-custom-dialog {
+  width: 22.5%; /* 设置对话框宽度为视口宽度的50% */
+  height: 50%; /* 设置对话框高度为视口高度的60% */
+  position: fixed; /* 固定定位 */
+  top: 5%; /* 距离顶部20%的位置 */
+  left: 75%; /* 距离左侧25%的位置 */
+}
+
 </style>
