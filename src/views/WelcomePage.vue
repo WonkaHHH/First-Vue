@@ -4,21 +4,23 @@
     <h1>Cabbage Engine</h1>
   </el-row>
 
-  <el-row :gutter="20" justify="start" align="center">
+<el-row :gutter="20" type="flex" class="column">
+  <el-col :span="24">
     <el-button type="primary" @click="goToSecondPage" size="large">继续游戏</el-button>
-  </el-row>
-  <el-row :gutter="20" justify="start" align="center">
+  </el-col>
+  <el-col :span="24">
     <el-button type="primary" @click="goToSecondPage" size="large">新建游戏</el-button>
-  </el-row>
-  <el-row :gutter="20" justify="start" align="center">
+  </el-col>
+  <el-col :span="24">
     <el-button type="primary" @click="uploadFile" size="large">加载游戏</el-button>
-  </el-row>
-  <el-row :gutter="20" justify="start" align="center">
+  </el-col>
+  <el-col :span="24">
     <el-button type="primary" size="large">游戏设置</el-button>
-  </el-row>
-  <el-row :gutter="20" justify="start" align="center">
+  </el-col>
+  <el-col :span="24">
     <el-button type="primary" size="large">退出游戏</el-button>
-  </el-row>
+  </el-col>
+</el-row>
 
   <el-row :gutter="20" justify="end" align="center">
     <el-button type="primary" @click="dialogVisible = true" size="large">公告</el-button>
