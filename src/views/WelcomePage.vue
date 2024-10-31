@@ -1,5 +1,6 @@
 <template>
 <el-row class="full-screen-center">
+
   <el-row :gutter="20" justify="center" align="center">
     <h1>Cabbage Engine</h1>
   </el-row>
@@ -23,7 +24,12 @@
 </el-row>
 
   <el-row :gutter="20" justify="end" align="center">
+  <el-col :span="24">
     <el-button type="primary" @click="dialogVisible = true" size="large">公告</el-button>
+  </el-col>
+  <el-col :span="24">
+    <el-text size="medium">version 0.3.0</el-text>
+  </el-col>
     <el-dialog v-model="dialogVisible" title="公告" :modal="false" :close-on-click-modal="false" draggable
                :z-index="998">
       <div>一些版本更新信息</div>
@@ -32,9 +38,6 @@
     </el-dialog>
   </el-row>
 
-  <el-row :gutter="20" justify="end" align="center">
-    <el-text size="medium">version 0.3.0</el-text>
-  </el-row>
 </el-row>
 </template>
 
