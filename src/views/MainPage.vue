@@ -1,7 +1,42 @@
 <template>
   <div class="second-page">
+  <el-col :gutter="10">
+    <el-button type="primary">导入积木</el-button>
+    <el-button type="primary">导出积木</el-button>
+  </el-col>
+  <el-col :gutter="10">
+    <el-button type="primary" @click="goToHomePage">运行</el-button>
+    <el-button type="primary" @click="goToHomePage">调试</el-button>
+    <el-button type="primary" @click="goToHomePage">打包</el-button>
+  </el-col>
+  <el-col :gutter="10">
+    <el-button type="primary">保存场景</el-button>
+        <el-button type="primary">另存为场景</el-button>
+          </el-col>
+          <el-col :gutter="10">
+    <el-button type="primary">游戏设置</el-button>
     <el-button type="primary" @click="goToHomePage">回到菜单</el-button>
-    <el-button type="primary" @click="goToHomePage">退出游戏</el-button>
+  </el-col>
+
+    <el-dialog
+      v-model="dialogVisible"
+      title="物体列表"
+      :modal="false"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+      draggable
+      :z-index="998"
+      @before-close="handleClose">
+
+    <el-text size="medium">物体1</el-text>
+    <el-text size="medium">物体1</el-text>
+        <el-text size="medium">物体1</el-text>
+            <el-text size="medium">物体1</el-text>
+  </el-dialog>
+
+
+
     <!-- Dock栏 -->
     <div class="dock">
       <div class="dock-item" @click="openAppModal(1)">
@@ -43,6 +78,7 @@ export default {
     const isDragging = ref(false);
     const dragOffset = ref({ x: 0, y: 0 });
     const currentModal = ref(null);
+    const dialogVisible = ref(true); // 定义响应式数据
 
     const goToHomePage = () => {
       router.push({ name: 'WelcomePage' });
@@ -95,7 +131,7 @@ export default {
       document.removeEventListener('mouseup', endDrag);
     };
 
-    return { goToHomePage, goToApp, openAppModal, closeAppModal, modals, startDrag };
+    return { goToHomePage, goToApp, openAppModal, closeAppModal, modals, startDrag , dialogVisible};
   },
 };
 </script>
