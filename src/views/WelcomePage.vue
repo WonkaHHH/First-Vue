@@ -5,26 +5,25 @@
 <!--    <h1>Cabbage Engine</h1>-->
 <!--  </el-row>-->
 
-<el-row :gutter="20" type="flex" class="column" justify="start" align="center" style="margin-top: 65px;">
+<el-row :gutter="20" type="flex" class="column" justify="start" align="center" style="margin-top: 160px;margin-left: 30px">
   <el-col :gutter="10">
-    <el-button class="custom-button" type="primary" @click="goToSecondPage" size="large">继续游戏</el-button>
+    <el-button class="custom-button" type="primary" @click="goToSecondPage">继续游戏</el-button>
   </el-col>
   <el-col :gutter="10">
-    <el-button class="custom-button" type="primary" @click="goToSecondPage" size="large">新建游戏</el-button>
+    <el-button class="custom-button" type="primary" @click="goToSecondPage">新建游戏</el-button>
   </el-col>
   <el-col :gutter="10">
-    <el-button class="custom-button" type="primary" @click="uploadFile" size="large">加载游戏</el-button>
+    <el-button class="custom-button" type="primary" @click="uploadFile">加载游戏</el-button>
   </el-col>
   <el-col :gutter="10">
-    <el-button class="custom-button" type="primary" size="large">游戏设置</el-button>
+    <el-button class="custom-button" type="primary">游戏设置</el-button>
   </el-col>
   <el-col :gutter="10">
-    <el-button class="custom-button" type="primary" size="large">退出游戏</el-button>
+    <el-button class="custom-button" type="primary">退出游戏</el-button>
   </el-col>
-
-  <el-col :gutter="10">
-    <el-button class="decorate-button" type="primary" size="large"></el-button>
-  </el-col>
+<!--  <el-col :gutter="10">-->
+<!--    <el-button class="decorate-button" type="primary"></el-button>-->
+<!--  </el-col>-->
 </el-row>
 
   <el-row type="flex" class="column" justify="end" align="center">
@@ -112,13 +111,17 @@ export default {
 }
 .custom-button {
   background-color: rgba(0, 0, 0, 0.0);
-  margin: 0px; /* 上下左右各10px的间距 */
+  margin: 9px; /* 上下左右各10px的间距 */
   background-image: url('button_background.png');
   background-size: cover;
   border-color: transparent; 
   color: white;
-  width: 8%; /* 设置对话框宽度为视口宽度的50% */
-  height: 50%; /* 设置对话框高度为视口高度的60% */
+  width: 15%; /* 设置对话框宽度为视口宽度的50% */
+  height: 135%; /* 设置对话框高度为视口高度的60% */
+  font-size: 20px;
+  display: flex; /* 使用 flexbox 布局 */
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
 }
 .el-button {
   position: relative;
@@ -167,13 +170,13 @@ export default {
 
 .decorate-button {
   background-color: rgba(0, 0, 0, 0.0);
-  margin: 10px; /* 上下左右各10px的间距 */
+  margin: 6px; /* 上下左右各10px的间距 */
   background-image: url('small_button.png');
   background-size: cover;
   border-color: transparent;
   color: white;
-  width: 13%; /* 设置对话框宽度为视口宽度的50% */
-  height: 50%; /* 设置对话框高度为视口高度的60% */
+  width: 15%; /* 设置对话框宽度为视口宽度的50% */
+  height: 135%; /* 设置对话框高度为视口高度的60% */
 }
 
 
