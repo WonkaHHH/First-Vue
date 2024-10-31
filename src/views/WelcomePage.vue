@@ -5,7 +5,7 @@
 <!--    <h1>Cabbage Engine</h1>-->
 <!--  </el-row>-->
 
-<el-row :gutter="20" type="flex" class="column" justify="start" align="center">
+<el-row :gutter="20" type="flex" class="column" justify="start" align="center" style="margin-top: 65px;">
   <el-col :gutter="20">
     <el-button class="custom-button" type="primary" @click="goToSecondPage" size="large">继续游戏</el-button>
   </el-col>
@@ -107,8 +107,9 @@ export default {
   left: 0%;
 }
 .custom-button {
-  margin: 5px; /* 上下左右各10px的间距 */
+  margin: 10px; /* 上下左右各10px的间距 */
   background-image: url('button_background.png');
+  background-size: cover;
   border-color: transparent; 
   color: white;
   width: 13%; /* 设置对话框宽度为视口宽度的50% */
