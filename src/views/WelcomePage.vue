@@ -41,11 +41,11 @@
       :show-close="false"
       draggable
       :z-index="998"
-      class="my-custom-dialog"
+      class="no-title my-custom-dialog"
       @before-close="handleClose">
-    <div>一些版本更新信息</div>
-    <div>QQ群号：</div>
-    <div>QQ群号二维码</div>
+
+    <el-text size="medium" class="message-font">version 0.3.0</el-text>
+    <el-text size="medium" class="message-font">version 0.3.0</el-text>
   </el-dialog>
 
 
@@ -143,6 +143,13 @@ export default {
   left: 75%; /* 距离左侧25%的位置 */
   background-color: rgba(0, 0, 0, 0.5);
   border-color: transparent;
+
 }
+
+.message-font {
+  font-family: 'Fantasy', sans-serif;
+  color: white;
+}
+
 
 </style>
