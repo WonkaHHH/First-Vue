@@ -41,7 +41,7 @@
       :show-close="false"
       draggable
       :z-index="998"
-      class="no-title my-custom-dialog"
+      class="my-custom-dialog"
       @before-close="handleClose">
 
     <el-text size="medium" class="message-font">version 0.3.0</el-text>
@@ -111,6 +111,8 @@ export default {
   background-color: rgba(192, 192, 192, 0.5);
   border-color: transparent; 
   color: white;
+  width: 13%; /* 设置对话框宽度为视口宽度的50% */
+  height: 50%; /* 设置对话框高度为视口高度的60% */
 }
 .el-button {
   position: relative;
@@ -149,6 +151,12 @@ export default {
 .message-font {
   font-family: 'Fantasy', sans-serif;
   color: white;
+}
+
+.el-dialog__title {
+  color: white;
+  background-color: rgba(0, 0, 0, 0);
+  border-color: transparent;
 }
 
 
