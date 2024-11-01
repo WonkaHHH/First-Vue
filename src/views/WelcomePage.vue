@@ -5,7 +5,7 @@
 <!--    <h1>Cabbage Engine</h1>-->
 <!--  </el-row>-->
 
-<el-row :gutter="20" type="flex" class="column" justify="start" align="center" style="margin-top: 160px;margin-left: 30px">
+<el-row :gutter="20" type="flex" class="column" justify="start" align="center" style="margin-top: 12%;margin-left: 5%">
   <el-col :gutter="10">
     <el-button class="custom-button" type="primary" @click="goToSecondPage">继续游戏</el-button>
   </el-col>
@@ -26,12 +26,12 @@
 <!--  </el-col>-->
 </el-row>
 
-  <el-row type="flex" class="column" justify="end" align="center">
+  <el-row type="flex" class="column" justify="end" align="center" style="margin-top: 5%;margin-right: 4%">
 <!--  <el-col justify="center" align="end">-->
 <!--&lt;!&ndash;    <el-button class="custom-button" type="primary" @click="dialogVisible = true" size="medium">公告</el-button>&ndash;&gt;-->
 <!--  </el-col>-->
   <el-col justify="center" align="end">
-    <el-text size="medium" class="custom-font" style="margin-top: 5px;">version 0.3.0</el-text>
+    <el-text size="medium" class="custom-font" style="margin-top: 0px;"> version 0.3.0</el-text>
   </el-col>
   </el-row>
 
