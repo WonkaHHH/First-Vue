@@ -29,8 +29,7 @@
   </el-dialog>
 
   <el-dialog v-model="bagVisible" title="背包" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="998" draggable modal-class="operation-dialog-modal">
-    <el-button type="primary">导入物品</el-button>
-    <el-button type="primary">垃圾桶</el-button>
+    <BagDialog :elementList="images" :onAdd="handleBagAddElement" :onRemove="handleBagRemove" :onRemoveAll="handleBagClear" />
   </el-dialog>
 
   <el-dialog v-model="runVisible" title="运行" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="998" draggable modal-class="operation-dialog-modal"> </el-dialog>
@@ -40,6 +39,7 @@
 import { useRouter } from 'vue-router'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import DragElement from '../components/DragElement.vue'
+import BagDialog from '../components/BagDialog.vue'
 import { v4 } from 'uuid'
 export default {
   setup() {
@@ -95,6 +95,21 @@ export default {
       }
     }
 
+    const handleBagAddElement = () => {
+      // 导入数据到物品列表中
+    }
+
+    const handleBagRemove = (uuid) => {
+      const newList = images.value.filter((item) => {
+        return item.uuid !== uuid
+      })
+      images.value = newList
+    }
+
+    const handleBagClear = () => {
+      images.value = []
+    }
+
     onMounted(() => {
       window.addEventListener('keydown', handleKeyDown)
     })
@@ -110,6 +125,9 @@ export default {
       bagVisible,
       setVisible,
       images,
+      handleBagAddElement,
+      handleBagRemove,
+      handleBagClear,
     }
   },
 }
