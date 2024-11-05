@@ -22,18 +22,18 @@
     </el-row>
   </div>
 
-  <el-dialog v-model="setVisible" title="设置" :modal="false" :close-on-click-modal="false" :z-index="998" draggable modal-class="operation-dialog-modal">
+  <el-dialog v-model="setVisible" title="设置" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="998" draggable modal-class="operation-dialog-modal">
     <el-button type="primary">保存游戏</el-button>
     <el-button type="primary">打包游戏</el-button>
     <el-button type="primary" @click="goToHomePage">返回菜单</el-button>
   </el-dialog>
 
-  <el-dialog v-model="bagVisible" title="背包" :modal="false" :close-on-click-modal="false" :z-index="998" draggable modal-class="operation-dialog-modal">
+  <el-dialog v-model="bagVisible" title="背包" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="998" draggable modal-class="operation-dialog-modal">
     <el-button type="primary">导入物品</el-button>
     <el-button type="primary">垃圾桶</el-button>
   </el-dialog>
 
-  <el-dialog v-model="runVisible" title="运行" :modal="false" :close-on-click-modal="false" :z-index="998" draggable modal-class="operation-dialog-modal"> </el-dialog>
+  <el-dialog v-model="runVisible" title="运行" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="998" draggable modal-class="operation-dialog-modal"> </el-dialog>
 </template>
 
 <script>
@@ -54,8 +54,13 @@ export default {
     const images = ref([]) // 存储图片元素的数组
 
     // 添加图片到画布中心
-    const addImage = () => {
+    const addImage = (type) => {
+      /**
+       * @type {import('../types/element').ElementType}
+       */
       const img = {
+        elemType: 'image',
+        type,
         src: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
         uuid: v4(),
         style: {
@@ -70,10 +75,23 @@ export default {
 
     // 监听键盘事件
     const handleKeyDown = (event) => {
+      event.preventDefault()
       const key = event.key
       // 检测按下的是否为数字 1-9
       if (key >= '1' && key <= '9') {
-        addImage()
+        addImage(Number(key))
+      }
+      // 如果是tab，bagVisible设置为true
+      if (key === 'Tab') {
+        bagVisible.value = true
+      }
+      // 如果是esc，setVisible设置为true
+      if (key === 'Escape') {
+        setVisible.value = true
+      }
+      // 如果是F5，runVisible设置为true
+      if (key === 'F5') {
+        runVisible.value = true
       }
     }
 
