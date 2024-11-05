@@ -22,18 +22,18 @@
     </el-row>
   </div>
 
-  <el-dialog v-model="setVisible" title="设置" :modal="false" :close-on-click-modal="false" :z-index="998" draggable>
+  <el-dialog v-model="setVisible" title="设置" :modal="false" :close-on-click-modal="false" :z-index="998" draggable modal-class="operation-dialog-modal">
     <el-button type="primary">保存游戏</el-button>
     <el-button type="primary">打包游戏</el-button>
     <el-button type="primary" @click="goToHomePage">返回菜单</el-button>
   </el-dialog>
 
-  <el-dialog v-model="bagVisible" title="背包" :modal="false" :close-on-click-modal="false" :z-index="998" draggable>
+  <el-dialog v-model="bagVisible" title="背包" :modal="false" :close-on-click-modal="false" :z-index="998" draggable modal-class="operation-dialog-modal">
     <el-button type="primary">导入物品</el-button>
     <el-button type="primary">垃圾桶</el-button>
   </el-dialog>
 
-  <el-dialog v-model="runVisible" title="运行" :modal="false" :close-on-click-modal="false" :z-index="998" draggable> </el-dialog>
+  <el-dialog v-model="runVisible" title="运行" :modal="false" :close-on-click-modal="false" :z-index="998" draggable modal-class="operation-dialog-modal"> </el-dialog>
 </template>
 
 <script>
@@ -98,6 +98,11 @@ export default {
 </script>
 
 <style lang="scss">
+.el-row {
+  width: 100%;
+  margin-bottom: 20px;
+  left: 0%;
+}
 .el-button {
   position: relative;
   z-index: 999;
@@ -113,5 +118,15 @@ export default {
   flex-grow: 1;
   position: relative;
   background-color: rgba(0, 0, 0, 0.1);
+}
+
+.operation-dialog-modal {
+  pointer-events: none;
+  .el-overlay-dialog {
+    pointer-events: none;
+    .el-dialog {
+      pointer-events: auto;
+    }
+  }
 }
 </style>
