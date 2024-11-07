@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <!-- 画布元素，按下键盘数字键后图片会出现在这里 -->
-    <div class="fullscreen-canvas" @drop="handleDrop" @dragover.prevent>
+    <div tabindex="0" class="fullscreen-canvas" @keyup="handleKeyDown" @drop="handleDrop" @dragover.prevent>
       <DragElement v-for="img in images" :key="img.uuid" :src="img.src" :style="img.style" :initialX="img.positionX" :initialY="img.positionY" />
     </div>
 
@@ -22,7 +22,7 @@
   </el-dialog>
 
   <el-dialog v-model="bagVisible" title="背包" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="998" draggable modal-class="operation-dialog-modal">
-    <BagDialog :elementList="images" :onAdd="handleBagAddElement" :onRemove="handleBagRemove" :onRemoveAll="handleBagClear" />
+    <BagDialog :elementList="images" :onAdd="handleBagAddElement" :onRemove="handleBagRemove" :onRemoveAll="handleBagClear" :onElementChange="handleBagItemChange" />
   </el-dialog>
 
   <el-dialog v-model="runVisible" title="运行" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="998" draggable modal-class="operation-dialog-modal"> </el-dialog>
@@ -30,7 +30,7 @@
 
 <script>
 import { useRouter } from 'vue-router'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref } from 'vue'
 import DragElement from '../components/DragElement.vue'
 import BagDialog from '../components/BagDialog.vue'
 import { v4 } from 'uuid'
@@ -106,17 +106,21 @@ export default {
       images.value = newList
     }
 
+    const handleBagItemChange = (newElem) => {
+      const { uuid } = newElem
+      const newList = images.value.map((item) => {
+        if (item.uuid !== uuid) {
+          return item
+        } else {
+          return newElem
+        }
+      })
+      images.value = newList
+    }
+
     const handleBagClear = () => {
       images.value = []
     }
-
-    onMounted(() => {
-      window.addEventListener('keydown', handleKeyDown)
-    })
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('keydown', handleKeyDown)
-    })
 
     function handleDragStart(num) {
       return (event) => {
@@ -149,6 +153,8 @@ export default {
       handleBagClear,
       handleDragStart,
       handleDrop,
+      handleKeyDown,
+      handleBagItemChange,
     }
   },
 }
