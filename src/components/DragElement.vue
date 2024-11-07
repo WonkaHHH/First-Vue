@@ -19,11 +19,11 @@ export default {
     },
     initialX: {
       type: Number,
-      default: window.innerWidth / 2 - 50,
+      default: window.innerWidth / 2,
     },
     initialY: {
       type: Number,
-      default: window.innerHeight / 2 - 50,
+      default: window.innerHeight / 2,
     },
   },
   setup(props) {
@@ -31,7 +31,11 @@ export default {
     const dragObj = ref({})
 
     const dragResult = useDraggable(imgRef, {
-      initialValue: { x: props.initialX, y: props.initialY },
+      initialValue: {
+        // 减去物体宽高的一半，使得拖动中心在物体中心
+        x: props.initialX - 50,
+        y: props.initialY - 50,
+      },
       preventDefault: true,
       onMove(position) {
         const elem = imgRef.value

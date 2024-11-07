@@ -1,22 +1,15 @@
 <template>
   <div class="container">
     <!-- 画布元素，按下键盘数字键后图片会出现在这里 -->
-    <div class="fullscreen-canvas">
-      <DragElement v-for="img in images" :key="img.uuid" :src="img.src" :style="img.style" />
+    <div class="fullscreen-canvas" @drop="handleDrop" @dragover.prevent>
+      <DragElement v-for="img in images" :key="img.uuid" :src="img.src" :style="img.style" :initialX="img.positionX" :initialY="img.positionY" />
     </div>
 
     <el-row justify="center" align="center">
       <el-button type="primary" size="medium" @click="runVisible = true">运行</el-button>
-      <el-button type="primary" size="small">1</el-button>
-      <el-button type="primary" size="small">2</el-button>
-      <el-button type="primary" size="small">3</el-button>
-      <el-button type="primary" size="small">4</el-button>
-      <el-button type="primary" size="small">5</el-button>
-      <el-button type="primary" size="small">6</el-button>
-      <el-button type="primary" size="small">7</el-button>
-      <el-button type="primary" size="small">8</el-button>
-      <el-button type="primary" size="small">9</el-button>
-      <el-button type="primary" size="small">0</el-button>
+      <el-button v-for="num in btnList" :key="num" type="primary" size="small" draggable="true" @dragstart="handleDragStart(num)">
+        {{ num }}
+      </el-button>
       <el-button type="primary" size="large" @click="bagVisible = true">背包</el-button>
       <el-button type="primary" size="medium" @click="setVisible = true">设置</el-button>
     </el-row>
@@ -44,6 +37,7 @@ import { v4 } from 'uuid'
 export default {
   setup() {
     const router = useRouter()
+    const btnList = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 0])
     const runVisible = ref(false)
     const bagVisible = ref(false)
     const setVisible = ref(false)
@@ -54,7 +48,10 @@ export default {
     const images = ref([]) // 存储图片元素的数组
 
     // 添加图片到画布中心
-    const addImage = (type) => {
+    const addImage = (type, position) => {
+      const uuid = v4()
+      const positionX = position?.x
+      const positionY = position?.y
       /**
        * @type {import('../types/element').ElementType}
        */
@@ -62,11 +59,14 @@ export default {
         elemType: 'image',
         type,
         src: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        uuid: v4(),
+        uuid,
+        name: `物体-${type}-${uuid}`,
         style: {
           width: '100px',
           height: '100px',
         },
+        positionX,
+        positionY,
       }
       const newList = [...images.value]
       newList.push(img)
@@ -118,7 +118,26 @@ export default {
       window.removeEventListener('keydown', handleKeyDown)
     })
 
+    function handleDragStart(num) {
+      return (event) => {
+        this.initialPosition = { x: event.clientX, y: event.clientY }
+        event.dataTransfer.effectAllowed = 'move'
+        event.dataTransfer.setData('buttonNumber', num) // 保存按钮的数字
+      }
+    }
+
+    function handleDrop(event) {
+      const canvasRect = event.currentTarget.getBoundingClientRect()
+      const dropPosition = {
+        x: event.clientX - canvasRect.left,
+        y: event.clientY - canvasRect.top,
+      }
+      const buttonNumber = event.dataTransfer.getData('buttonNumber') // 获取按钮的数字
+      addImage(Number(buttonNumber), dropPosition)
+    }
+
     return {
+      btnList,
       goToHomePage,
       router,
       runVisible,
@@ -128,6 +147,8 @@ export default {
       handleBagAddElement,
       handleBagRemove,
       handleBagClear,
+      handleDragStart,
+      handleDrop,
     }
   },
 }
