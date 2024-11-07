@@ -7,7 +7,7 @@
 
     <el-row justify="center" align="center">
       <el-button type="primary" size="medium" @click="runVisible = true">运行</el-button>
-      <el-button v-for="num in btnList" :key="num" type="primary" size="small" draggable="true" @dragstart="handleDragStart(num)">
+      <el-button v-for="num in btnList" :key="num" type="primary" size="small" draggable="true" @dragstart="(event) => handleDragStart(num, event)">
         {{ num }}
       </el-button>
       <el-button type="primary" size="large" @click="bagVisible = true">背包</el-button>
@@ -122,12 +122,10 @@ export default {
       images.value = []
     }
 
-    function handleDragStart(num) {
-      return (event) => {
-        this.initialPosition = { x: event.clientX, y: event.clientY }
-        event.dataTransfer.effectAllowed = 'move'
-        event.dataTransfer.setData('buttonNumber', num) // 保存按钮的数字
-      }
+    function handleDragStart(num, event) {
+      this.initialPosition = { x: event.clientX, y: event.clientY }
+      event.dataTransfer.effectAllowed = 'move'
+      event.dataTransfer.setData('buttonNumber', num) // 保存按钮的数字
     }
 
     function handleDrop(event) {

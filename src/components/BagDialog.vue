@@ -31,7 +31,25 @@
 
     <el-tabs v-model="activeTab" tab-position="left">
       <el-tab-pane key="配置" label="配置" name="配置" v-if="selectedTabs.includes('配置')">
-        <div></div>
+        <div>
+          <el-row>
+            <!-- 左侧 Descriptions 区域 -->
+            <el-col :span="12">
+              <el-descriptions :column="1">
+                <el-descriptions-item v-for="(value, key) in element.style" :key="key" :label="`${getChineseLabel(key)}：`">
+                  {{ value }}
+                </el-descriptions-item>
+              </el-descriptions>
+            </el-col>
+
+            <!-- 右侧 JSON 编辑区域 -->
+            <el-col :span="12">
+              <div class="element-json">
+                <JsonViewer :value="element" />
+              </div>
+            </el-col>
+          </el-row>
+        </div>
       </el-tab-pane>
       <el-tab-pane key="积木" label="积木" name="积木" v-if="selectedTabs.includes('积木')">
         <p>这是积木的内容</p>
@@ -45,6 +63,10 @@
 
 <script>
 import { computed, nextTick, ref } from 'vue'
+import { JsonViewer } from 'vue3-json-viewer'
+// if you used v1.0.5 or latster ,you should add import "vue3-json-viewer/dist/index.css"
+import 'vue3-json-viewer/dist/index.css'
+
 export default {
   props: {
     elementList: {
@@ -68,6 +90,9 @@ export default {
       required: true,
     },
   },
+  components: {
+    JsonViewer,
+  },
   methods: {
     addItem() {
       this.onAdd() // 调用导入物品的回调
@@ -77,6 +102,13 @@ export default {
     },
     removeAll() {
       this.onRemoveAll()
+    },
+    getChineseLabel(key) {
+      const labelMap = {
+        width: '宽度',
+        height: '高度',
+      }
+      return labelMap[key] || key
     },
   },
   emits: ['update:element'],

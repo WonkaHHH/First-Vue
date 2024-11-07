@@ -18,7 +18,8 @@
     "unplugin-element-plus": "^0.8.0",
     "uuid": "^11.0.2",
     "vue": "^3.5.12",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.4.5",
+    "vue3-json-viewer": "^2.2.2"
   },
   "devDependencies": {
     "@types/uuid": "^10.0.0",
