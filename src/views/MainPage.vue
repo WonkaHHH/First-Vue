@@ -6,7 +6,9 @@
     </div>
 
     <el-row justify="center" align="center">
+      <el-button type="primary" size="medium" @click="runVisible = true">暂停</el-button>
       <el-button type="primary" size="medium" @click="runVisible = true">运行</el-button>
+      <el-button type="primary" size="medium" @click="runVisible = true">倍速</el-button>
       <el-button v-for="num in btnList" :key="num" type="primary" size="small" draggable="true" @dragstart="(event) => handleDragStart(num, event)">
         {{ num }}
       </el-button>
