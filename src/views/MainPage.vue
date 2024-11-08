@@ -18,6 +18,7 @@
   <el-dialog v-model="setVisible" title="设置" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="998" draggable modal-class="operation-dialog-modal">
     <el-button type="primary">保存游戏</el-button>
     <el-button type="primary">打包游戏</el-button>
+     <el-button type="primary">开启/关闭 新手引导</el-button>
     <el-button type="primary" @click="goToHomePage">返回菜单</el-button>
   </el-dialog>
 
