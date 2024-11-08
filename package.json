@@ -16,7 +16,10 @@
     "sass-loader": "^16.0.2",
     "unplugin-element-plus": "^0.8.0",
     "vue": "^3.5.12",
-    "vue-router": "^4.4.5"
+    "vue-draggable-plus": "^0.5.6",
+    "vue-draggable-resizable": "^3.0.0",
+    "vue-router": "^4.4.5",
+    "vuedraggable": "next"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.4",

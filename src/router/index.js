@@ -12,6 +12,11 @@ const routes = [
       name: 'MainPage',
       component: () => import('../views/MainPage.vue')
     },
+    {
+        path: '/',
+        name: 'dragPage',
+        component: () => import('../views/dragPage.vue')
+      },
 ]
 
 const router = createRouter({
