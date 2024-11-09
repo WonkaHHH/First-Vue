@@ -14,6 +14,7 @@
       </el-button>
       <el-button type="primary" size="large" @click="bagVisible = true">背包</el-button>
       <el-button type="primary" size="medium" @click="setVisible = true">设置</el-button>
+      <el-text size="small"> 按下V切换视角</el-text>
     </el-row>
   </div>
 
