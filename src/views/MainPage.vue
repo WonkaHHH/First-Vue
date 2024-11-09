@@ -20,7 +20,7 @@
   <el-dialog v-model="setVisible" title="设置" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="998" draggable modal-class="operation-dialog-modal">
     <el-button type="primary">保存游戏</el-button>
     <el-button type="primary">打包游戏</el-button>
-     <el-button type="primary">开启/关闭 新手引导</el-button>
+    <el-button type="primary">开启/关闭 新手引导</el-button>
     <el-button type="primary" @click="goToHomePage">返回菜单</el-button>
   </el-dialog>
 
@@ -33,7 +33,7 @@
 
 <script>
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { onUnmounted, ref } from 'vue'
 import DragElement from '../components/DragElement.vue'
 import BagDialog from '../components/BagDialog.vue'
 import { v4 } from 'uuid'
@@ -84,6 +84,12 @@ export default {
       if (key >= '1' && key <= '9') {
         addImage(Number(key))
       }
+    }
+
+    const handleGlobalKeyDown = (event) => {
+      event.preventDefault()
+      const key = event.key
+
       // 如果是tab，bagVisible设置为true
       if (key === 'Tab') {
         bagVisible.value = true
@@ -97,6 +103,12 @@ export default {
         runVisible.value = true
       }
     }
+    // windows监听键盘事件
+    window.addEventListener('keydown', handleGlobalKeyDown)
+    // 移除监听
+    onUnmounted(() => {
+      window.removeEventListener('keydown', handleGlobalKeyDown)
+    })
 
     const handleBagAddElement = () => {
       // 导入数据到物品列表中
