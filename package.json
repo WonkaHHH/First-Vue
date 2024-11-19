@@ -11,17 +11,23 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "@vitejs/plugin-legacy": "^5.4.3",
+    "@vueuse/core": "^11.2.0",
     "element-plus": "^2.8.6",
     "sass": "^1.80.4",
     "sass-loader": "^16.0.2",
     "unplugin-element-plus": "^0.8.0",
+    "uuid": "^11.0.2",
     "vue": "^3.5.12",
+    "vue-dialog-drag": "^0.1.29",
+    "vue-draggable-next": "^2.2.1",
     "vue-draggable-plus": "^0.5.6",
     "vue-draggable-resizable": "^3.0.0",
     "vue-router": "^4.4.5",
+    "vue3-json-viewer": "^2.2.2",
     "vuedraggable": "next"
   },
   "devDependencies": {
+    "@types/uuid": "^10.0.0",
     "@vitejs/plugin-vue": "^5.1.4",
     "terser": "^5.36.0",
     "unplugin-auto-import": "^0.18.3",

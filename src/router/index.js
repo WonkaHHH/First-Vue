@@ -1,5 +1,5 @@
 // 路由文件
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
     {
@@ -8,25 +8,17 @@ const routes = [
         component: () => import('../views/WelcomePage.vue')
     },
     {
-      path: '/',
+      path: '/MainPage',
       name: 'MainPage',
       component: () => import('../views/MainPage.vue')
-    },
-    {
-        path: '/',
-        name: 'dragPage',
-        component: () => import('../views/dragPage.vue')
-      },
+    }
 ]
 
 const router = createRouter({
-    history: createWebHashHistory(),
-    routes
+  history: createWebHashHistory(),
+  routes,
 })
 
+router.beforeEach((to, from) => {})
 
-router.beforeEach((to,from)=>{
-
-})
-
-export default router;
+export default router
