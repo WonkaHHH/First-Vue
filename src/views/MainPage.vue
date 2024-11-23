@@ -6,18 +6,22 @@
     </div>
 
     <el-row justify="center" align="center">
+      <el-button type="primary" size="medium" @click="runVisible = true">暂停</el-button>
       <el-button type="primary" size="medium" @click="runVisible = true">运行</el-button>
+      <el-button type="primary" size="medium" @click="runVisible = true">倍速</el-button>
       <el-button v-for="num in btnList" :key="num" type="primary" size="small" draggable="true" @dragstart="(event) => handleDragStart(num, event)">
         {{ num }}
       </el-button>
       <el-button type="primary" size="large" @click="bagVisible = true">背包</el-button>
       <el-button type="primary" size="medium" @click="setVisible = true">设置</el-button>
+      <el-text size="small"> 按下V切换视角</el-text>
     </el-row>
   </div>
 
   <el-dialog v-model="setVisible" title="设置" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="998" draggable modal-class="operation-dialog-modal">
     <el-button type="primary">保存游戏</el-button>
     <el-button type="primary">打包游戏</el-button>
+    <el-button type="primary">开启/关闭 新手引导</el-button>
     <el-button type="primary" @click="goToHomePage">返回菜单</el-button>
   </el-dialog>
 
@@ -34,7 +38,7 @@
 
 <script>
 import { useRouter } from 'vue-router'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onUnmounted } from 'vue'
 import DragElement from '../components/DragElement.vue'
 import BagDialog from '../components/BagDialog.vue'
 import elementDialog from '../components/elementDialog.vue';
@@ -119,7 +123,12 @@ export default {
       if (numberRegex.includes(key)) {
         addImage(Number(key), null, imgSrc.value[key])
       }
-      
+    }
+
+    const handleGlobalKeyDown = (event) => {
+      event.preventDefault()
+      const key = event.key
+
       // 如果是tab，bagVisible设置为true
       if (key === 'Tab') {
         bagVisible.value = true
@@ -141,7 +150,12 @@ export default {
       } 
     }
     const element = computed(() => {
-      return images.value.find((item) => item.uuid === elementUuid.value) || {}
+      return images.value.find((item) => item.uuid === elementUuid.value) || {}})
+    // windows监听键盘事件
+    window.addEventListener('keydown', handleGlobalKeyDown)
+    // 移除监听
+    onUnmounted(() => {
+      window.removeEventListener('keydown', handleGlobalKeyDown)
     })
 
     const handleBagAddElement = () => {
