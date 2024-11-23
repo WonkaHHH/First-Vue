@@ -38,7 +38,6 @@
 
   <el-dialog
       v-model="dialogVisible"
-      title="公告"
       :modal="false"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
@@ -47,9 +46,36 @@
       :z-index="998"
       class="my-custom-dialog"
       @before-close="handleClose">
-
+      <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+      <el-tab-pane label="公告" name="first" class="broadTab">
+        <img class="broadImg" src="../assets/imgs/broad.png"/>
+      </el-tab-pane>
+      <el-tab-pane label="致谢" name="second" class="regardsTab">
+        <el-text size="medium" class="message-font">制作团队</el-text>
+        <el-text size="medium" class="message-font">
+          GraphZ（邹刘磊）、Gemini（朱金铭）、翼首草（黄炎）、什么…、
+        </el-text>
+        <el-text size="medium" class="message-font">特别鸣谢（核心技术/产品设计/视觉元素的朋友们</el-text>
+        <el-text size="medium" class="message-font">
+          猫猫猫、
+          小薯条、与湫风起、
+          AQ（徐安琦）、xxm123666（徐志明）、无邪の梦（吴学杰）、
+          白吟（周聪）、Wlxkyh（林炎厚）、Zero（朱翎）、有个小小杜、及时行乐（高骜）、
+          coldWeather66260（吴恒）、Willy Wonka（黄语莹）、Effort and luck、whiteThrush（顾晟尧）、
+        </el-text>
+        <el-text size="medium" class="message-font">鸣谢（参与讨论、参与测试、给出建议的朋友们）</el-text>
+        <el-text size="medium" class="message-font">
+          整理中......
+        </el-text>
+        <el-text size="medium" class="message-font">额外鸣谢（向60-526实验室的负责人及其团队致以最崇高的敬意）</el-text>
+        <el-text size="medium" class="message-font">
+          范洪辉教授、朱洪锦教授，以及历任与现任的实验室成员
+        </el-text>
+      </el-tab-pane>
+    </el-tabs>
+<!-- 
     <el-text size="medium" class="message-font">version 0.3.0</el-text>
-    <el-text size="medium" class="message-font">version 0.3.0</el-text>
+    <el-text size="medium" class="message-font">version 0.3.0</el-text> -->
   </el-dialog>
 
 </el-row>
@@ -64,6 +90,7 @@ import {ref} from 'vue';
 export default {
   setup() {
     const router = useRouter();
+    const activeName = ref('first')
     const dialogVisible = ref(true); // 定义响应式数据
     const fileInput = ref(null);
     const goToSecondPage = () => {
@@ -95,7 +122,7 @@ export default {
       }
     };
 
-    return {goToSecondPage, dialogVisible, uploadFile}; // 返回响应式数据和方法
+    return {goToSecondPage, dialogVisible, activeName, uploadFile}; // 返回响应式数据和方法
   },
 };
 
@@ -186,8 +213,8 @@ export default {
 }
 
 .my-custom-dialog {
-  width: 22.5%; /* 设置对话框宽度为视口宽度的50% */
-  height: 50%; /* 设置对话框高度为视口高度的60% */
+  width: 25%; /* 设置对话框宽度为视口宽度的50% */
+  height: 60%; /* 设置对话框高度为视口高度的60% */
   position: fixed; /* 固定定位 */
   top: 5%; /* 距离顶部20%的位置 */
   left: 72%; /* 距离左侧25%的位置 */
@@ -217,9 +244,19 @@ export default {
   width: 15%; /* 设置对话框宽度为视口宽度的50% */
   height: 135%; /* 设置对话框高度为视口高度的60% */
 }
-
-
-
+.regardsTab{
+  display: flex;
+  flex-direction: column;
+}
+.broadImg{
+  width: 50%;
+  height: 50%;
+}
+.broadTab{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>
 
 

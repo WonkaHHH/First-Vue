@@ -1,73 +1,45 @@
 <template>
-  <div class="content-grid">
+  <el-row :gutter="10" @click="hideMenu">
+    <el-col :span="6" class="border-box">
+      <div class="content-grid"></div>
+      <el-button type="primary" @click="addItem">导入物品</el-button>
+    </el-col>
+    <el-col :span="18" class="border-box">
+      <div class="content-grid">
+        <div v-for="(item, index) in elementList" :key="index" class="grid-item" title="点击查看物品详情" @contextmenu="showMenu($event,item)" @click="handleElementClick(item)">
+          <img :src="item.src" class="grid-image"/>
+          <div icon="icon icon-delete" @click.stop="removeItem(item.uuid)" class="remove-button" title="删除">X</div>
+          <el-checkbox class="check-button" @click.stop="checkImgItem(item)" v-model="item.checked" size="large" />
+        </div>
+      </div>
+      <el-button type="primary" @click="removeAll">清空</el-button>
+    </el-col>
+  </el-row>
+
+  <!-- <div class="content-grid">
     <div v-for="(item, index) in elementList" :key="index" class="grid-item" title="点击查看物品详情" @click="handleElementClick(item)">
       <img :src="item.src" class="grid-image" />
       <div icon="icon icon-delete" @click.stop="removeItem(item.uuid)" class="remove-button" title="删除">X</div>
     </div>
-  </div>
-
-  <el-button type="primary" @click="addItem">导入物品</el-button>
-  <el-button type="primary" @click="removeAll">清空</el-button>
-
-  <!-- 物体详情对话框 -->
-  <el-dialog v-model="elementDialogVis" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="998" draggable modal-class="operation-dialog-modal" append-to-body>
-    <template #header>
-      <div v-if="!isEditingTitle" @click="startEditingTitle">
-        <span>{{ element.name }}</span>
-      </div>
-      <div v-else>
-        <el-input ref="inputRef" v-model="editableTitle" @blur="saveTitle" @keyup.enter="saveTitle" size="small" />
-      </div>
-    </template>
-    <el-form>
-      <el-form-item label="逻辑模式" label-position="right">
-        <el-checkbox-group v-model="selectedTabs">
-          <el-checkbox-button label="配置">配置</el-checkbox-button>
-          <el-checkbox-button label="积木">积木</el-checkbox-button>
-          <el-checkbox-button label="低代码">低代码</el-checkbox-button>
-        </el-checkbox-group>
-      </el-form-item>
-    </el-form>
-
-    <el-tabs v-model="activeTab" tab-position="left">
-      <el-tab-pane key="配置" label="配置" name="配置" v-if="selectedTabs.includes('配置')">
-        <div>
-          <el-row>
-            <!-- 左侧 Descriptions 区域 -->
-            <el-col :span="12">
-              <el-descriptions :column="1">
-                <el-descriptions-item v-for="(value, key) in element.style" :key="key" :label="`${getChineseLabel(key)}：`">
-                  {{ value }}
-                </el-descriptions-item>
-              </el-descriptions>
-            </el-col>
-
-            <!-- 右侧 JSON 编辑区域 -->
-            <el-col :span="12">
-              <div class="element-json">
-                <JsonViewer :value="element" />
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-      </el-tab-pane>
-      <el-tab-pane key="积木" label="积木" name="积木" v-if="selectedTabs.includes('积木')">
-        <p>这是积木的内容</p>
-      </el-tab-pane>
-      <el-tab-pane key="低代码" label="低代码" name="低代码" v-if="selectedTabs.includes('低代码')">
-        <p>这是低代码的内容</p>
-      </el-tab-pane>
-    </el-tabs>
-  </el-dialog>
+  </div> -->
+  <elementDialog v-model="elementDialogVis" :visible="eleVisible" :element="element" :onElementChange="handleElementChange"/>
+  <RightClickMenu ref="rightClickMenu" :onElementChange="handleElementChange" :onHandleBagRemove="removeItem"/>
 </template>
 
 <script>
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, toRefs } from 'vue'
+import RightClickMenu from '../components/rightMenu.vue';
 import { JsonViewer } from 'vue3-json-viewer'
 // if you used v1.0.5 or latster ,you should add import "vue3-json-viewer/dist/index.css"
 import 'vue3-json-viewer/dist/index.css'
+import elementDialog from '../components/elementDialog.vue';
+import { Position } from '@element-plus/icons-vue';
 
 export default {
+  components: {
+    elementDialog,
+    RightClickMenu,
+  },
   props: {
     elementList: {
       type: Array,
@@ -89,9 +61,10 @@ export default {
       type: Function,
       required: true,
     },
-  },
-  components: {
-    JsonViewer,
+    onCheckItem: {
+      type: Function,
+      required: true,
+    }
   },
   methods: {
     addItem() {
@@ -103,18 +76,14 @@ export default {
     removeAll() {
       this.onRemoveAll()
     },
-    getChineseLabel(key) {
-      const labelMap = {
-        width: '宽度',
-        height: '高度',
-      }
-      return labelMap[key] || key
-    },
+    handleElementChange(){
+      this.onElementChange()
+    }
   },
-  emits: ['update:element'],
   setup(props) {
-    const inputRef = ref(null)
+    const { onCheckItem } = toRefs(props);
     const elementUuid = ref('')
+    const rightClickMenu = ref(null);
     // 选中的物体
     const element = computed(() => {
       return props.elementList.find((item) => item.uuid === elementUuid.value) || {}
@@ -126,54 +95,35 @@ export default {
       elementDialogVis.value = true
     }
 
-    /*
-     * 下面是物品详情对话框逻辑
-     */
-    const selectedTabs = ref(['配置']) // 默认选中“配置”
-    const activeTab = ref('配置') // 默认激活的标签
-    const tabs = ref(['配置', '积木', '低代码']) // 可选的标签项
+    const showMenu = (event, img) => {
+      const canvasRect = event.currentTarget.getBoundingClientRect();
+      console.log(canvasRect, event)
+      const position = {
+        X: event.clientX,
+        Y: event.clientY,
+      }
+      rightClickMenu.value.showMenu(event, img, position);
+    };
 
-    const isEditingTitle = ref(false) // 控制是否处于编辑标题模式
-    const editableTitle = ref('') // 临时存储可编辑标题内容
+    const hideMenu = () => {
+      if (rightClickMenu.value) {
+        rightClickMenu.value.hideMenu();
+      }
+    };
 
-    // 开始编辑标题
-    const startEditingTitle = () => {
-      editableTitle.value = element.value.name
-      isEditingTitle.value = true
-      nextTick(() => {
-        const inputElem = inputRef.value
-        // 聚焦到输入框
-        if (inputElem) {
-          inputElem.focus()
-        }
-      })
+    const checkImgItem = (item) =>{
+      item.checked = ! item.checked;
+      onCheckItem.value(item)
     }
-
-    // 保存标题并退出编辑模式
-    const saveTitle = () => {
-      props.onElementChange({
-        ...element.value,
-        name: editableTitle.value,
-      })
-      isEditingTitle.value = false
-    }
-
-    /*
-     * 上面是物品详情对话框逻辑
-     */
 
     return {
       element,
       elementDialogVis,
       handleElementClick,
-      selectedTabs,
-      activeTab,
-      tabs,
-      editableTitle,
-      isEditingTitle,
-      startEditingTitle,
-      saveTitle,
-      inputRef,
+      showMenu,
+      hideMenu,
+      checkImgItem,
+      rightClickMenu,
     }
   },
 }
@@ -188,6 +138,13 @@ export default {
   overflow-y: auto; /* 允许上下滚动 */
   height: 400px; /* 最大高度，可根据需要调整 */
   margin-bottom: 20px; /* 增加底部间距以与按钮分隔 */
+}
+
+.vertical-line {
+  width: 2px; /* 竖线的宽度 */
+  height: 100px; /* 竖线的高度 */
+  background-color: black; /* 竖线的颜色 */
+  margin: 0 auto; /* 居中对齐 */
 }
 
 .grid-item {
@@ -222,7 +179,23 @@ export default {
   background-color: #666;
   color: #fff;
 }
+.check-button {
+  display: flex;
+  position: absolute; /* 设置删除按钮为绝对定位 */
+  bottom: 5px;
+  right: 5px; /* 将删除按钮放置在右下角 */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
 .grid-item:hover .remove-button {
   display: flex;
+}
+
+.border-box {
+  border: 1px solid #000; /* 黑色边框，2px宽度 */
+  padding: 10px; /* 内边距 */
 }
 </style>
