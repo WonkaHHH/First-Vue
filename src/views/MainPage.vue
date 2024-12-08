@@ -1,36 +1,83 @@
 <template>
   <div class="container" @click="hideMenu">
     <!-- 画布元素，按下键盘数字键后图片会出现在这里 -->
-    <div tabindex="0" class="fullscreen-canvas" :z-index="998" @keyup="handleKeyDown" @drop="handleDrop" @dragover.prevent>
+    <div tabindex="0" class="fullscreen-canvas" :z-index="100" @keyup="handleKeyDown" @drop="handleDrop" @dragover.prevent>
+      <el-button class="full-image-button-sweater" plain @click="runVisible = true, buttonTitle = '环境与天气'">
+        <img :src="imgButton[2]" style="width: 150px; height: 60px;">
+      </el-button>
+      <el-button type="primary" @click="runVisible = true, buttonTitle = '网络'">网络</el-button>
+      <el-button type="primary">2D/3D</el-button>
       <DragElement tabindex="0" v-for="img in images" :key="img.uuid" :src="img.src" :style="img.style" :initialX="img.positionX" :initialY="img.positionY" @keyup="handleDeleteImg($event, img)" @dblclick="handleDoubleClick(img)" @contextmenu="showMenu($event,img)"/>
     </div>
-
     <el-row justify="center" align="center">
-      <el-button type="primary" size="medium" @click="runVisible = true">暂停</el-button>
-      <el-button type="primary" size="medium" @click="runVisible = true">运行</el-button>
-      <el-button type="primary" size="medium" @click="runVisible = true">倍速</el-button>
-      <el-button v-for="num in btnList" :key="num" type="primary" size="small" draggable="true" @dragstart="(event) => handleDragStart(num, event)">
-        {{ num }}
+      <!-- <el-button type="primary" size="medium">暂停</el-button> -->
+      <el-button plain :style="fullImageButton" @click="changeRunMode()"></el-button>
+      <!-- <el-button type="primary" size="medium">倍速</el-button> -->
+      <el-button v-for="num in btnList" :key="num" plain size="small" draggable="true" @dragstart="(event) => handleDragStart(num, event)" class="full-image-button">
+        <el-popover
+              placement="top-start"
+              trigger="hover"
+              content="快捷键：... 功能：...">
+              <template #reference>
+                <img :src="imgSrc[num]" style="width: 20px; height: 20px;">
+              </template>
+            </el-popover>
       </el-button>
       <el-button type="primary" size="large" @click="bagVisible = true">背包</el-button>
       <el-button type="primary" size="medium" @click="setVisible = true">设置</el-button>
-      <el-text size="small"> 按下V切换视角</el-text>
+      <el-button>视角</el-button>
+      <!-- <el-text size="small"> 按下V切换视角</el-text> -->
     </el-row>
   </div>
 
   <el-dialog v-model="setVisible" title="设置" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="998" draggable modal-class="operation-dialog-modal">
-    <el-button type="primary">保存游戏</el-button>
-    <el-button type="primary">打包游戏</el-button>
-    <el-button type="primary">开启/关闭 新手引导</el-button>
-    <el-button type="primary" @click="goToHomePage">返回菜单</el-button>
+    <div class="settingDialog">
+      <el-button class="buttonSize" type="primary">保存游戏</el-button>
+      <el-button class="buttonSize" type="primary">打包游戏</el-button>
+      <el-button class="buttonSize" type="primary">开启/关闭 新手引导</el-button>
+      <el-button class="buttonSize" type="primary" @click="goToHomePage">返回菜单</el-button>
+      <el-form>
+        <el-form-item label="逻辑模式" label-position="right">
+          <el-checkbox-group v-model="selectedTabs">
+            <el-popover
+              placement="top-start"
+              trigger="hover"
+              content="属性">
+              <template #reference>
+                <el-checkbox-button value="属性" disabled>属性</el-checkbox-button>
+              </template>
+            </el-popover>
+            <el-popover
+              placement="top-start"
+              trigger="hover"
+              content="积木">
+              <template #reference>
+                <el-checkbox-button value="积木">积木</el-checkbox-button>
+              </template>
+            </el-popover>
+            <el-popover
+              placement="top-start"
+              trigger="hover"
+              content="代码">
+              <template #reference>
+                <el-checkbox-button value="代码">代码</el-checkbox-button>
+              </template>
+            </el-popover>
+          </el-checkbox-group>
+        </el-form-item>
+      </el-form>
+    </div>
   </el-dialog>
 
-  <el-dialog v-model="bagVisible" title="背包" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="998" draggable modal-class="operation-dialog-modal">
+  <el-dialog v-model="bagVisible" title="背包" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="110" draggable modal-class="operation-dialog-modal">
     <BagDialog :elementList="images" :onAdd="handleBagAddElement" :onRemove="handleBagRemove" :onRemoveAll="handleBagClear" :onElementChange="handleBagItemChange" :onCheckItem="handleOnCheckItem"/>
   </el-dialog>
 
 
-  <el-dialog v-model="runVisible" title="运行" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="998" draggable modal-class="operation-dialog-modal"> </el-dialog>
+  <el-dialog v-model="runVisible" :title="buttonTitle" :modal="false" :close-on-click-modal="false" :close-on-press-escape="false" :z-index="110" draggable modal-class="operation-dialog-modal" style="display: flex;flex-direction: column;"> 
+    <el-text v-if="buttonTitle == '网络'">引擎局域网协调编辑 / 游戏联机配置 （待讨论）</el-text>
+    <el-text v-if="buttonTitle == '环境与天气'">粒子系统（雨雪）/地理天空（时间变换、太阳变换）</el-text>
+  </el-dialog>
 
   <elementDialog v-model="eleVisible" :visible="eleVisible" :element="element" :onElementChange="handleBagItemChange"/>
   <RightClickMenu ref="rightClickMenu" :onElementChange="handleBagItemChange" :onHandleBagRemove="handleBagRemove"/>
@@ -38,16 +85,41 @@
 
 <script>
 import { useRouter } from 'vue-router'
-import { computed, ref, onUnmounted } from 'vue'
+import { computed, ref, onUnmounted, provide } from 'vue'
 import DragElement from '../components/DragElement.vue'
 import BagDialog from '../components/BagDialog.vue'
 import elementDialog from '../components/elementDialog.vue';
 import RightClickMenu from '../components/rightMenu.vue';
 import { v4 } from 'uuid'
 import { de } from 'element-plus/es/locales.mjs';
+import runImage from '../assets/imgs/run.png';
+import pauseImage from '../assets/imgs/pause.png';
+import sweaterImage from '../assets/imgs/sweater.png';
 export default {
   components: {
     RightClickMenu,
+  },
+  computed: {
+    fullImageButton() {
+      const imageUrl = this.imgButton[this.currentRunNum]
+      return {
+        backgroundImage: `url(${imageUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        border: 'none',
+        height: '40px',
+        width: '40px'
+      };
+    }
+  },
+  methods: {
+    changeRunMode(){
+      if(this.currentRunNum == 0){
+        this.currentRunNum = 1;
+      }else if(this.currentRunNum == 1){
+        this.currentRunNum = 0;
+      }
+    }
   },
   setup() {
     const router = useRouter()
@@ -64,16 +136,30 @@ export default {
       "https://fastly.picsum.photos/id/18/2500/1667.jpg?hmac=JR0Z_jRs9rssQHZJ4b7xKF82kOj8-4Ackq75D_9Wmz8",
       "https://fastly.picsum.photos/id/19/2500/1667.jpg?hmac=7epGozH4QjToGaBf_xb2HbFTXoV5o8n_cYzB7I4lt6g"
     ])
+    const imgButton = ref([
+      runImage,
+      pauseImage,
+      sweaterImage
+    ])
+    const currentRunNum = ref(0)
     const runVisible = ref(false)
     const bagVisible = ref(false)
     const setVisible = ref(false)
     const eleVisible = ref(false)
+    const buttonTitle = ref('')
     const goToHomePage = () => {
       router.push({ name: 'WelcomePage' })
     }
     const images = ref([]) // 存储图片元素的数组
     const elementUuid = ref('')
     const rightClickMenu = ref(null);
+
+    const selectedTabs = ref(['属性']) // 默认选中“配置”
+    const activeTab = ref('属性') // 默认激活的标签
+    const tabs = ref(['属性', '积木', '代码']) // 可选的标签项
+    provide('selectedTabs', selectedTabs);
+    provide('activeTab', activeTab);
+    provide('tabs', tabs);
 
     // 添加图片到画布中心
     const addImage = (type, position, src) => {
@@ -108,7 +194,6 @@ export default {
       }
       rightClickMenu.value.showMenu(event, img, position);
     };
-
     const hideMenu = () => {
       if (rightClickMenu.value) {
         rightClickMenu.value.hideMenu();
@@ -139,7 +224,7 @@ export default {
       }
       // 如果是F5，runVisible设置为true
       if (key === 'F5') {
-        runVisible.value = true
+        // runVisible.value = true
       }
     }
     const handleDeleteImg = (event, img) => {
@@ -228,6 +313,7 @@ export default {
       bagVisible,
       setVisible,
       eleVisible,
+      buttonTitle,
       element,
       images,
       handleBagAddElement,
@@ -242,7 +328,12 @@ export default {
       handleDoubleClick,
       showMenu,
       hideMenu,
-      rightClickMenu
+      rightClickMenu,
+      selectedTabs,
+      activeTab,
+      tabs,
+      imgButton,
+      currentRunNum
     }
   },
 }
@@ -280,4 +371,33 @@ export default {
     }
   }
 }
+.settingDialog{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.buttonSize{
+  width: 30%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.full-image-button {
+  background-size: cover; /* 使背景图像覆盖整个按钮 */
+  background-position: center; /* 将图像居中 */
+  border: none; /* 去掉边框 */
+  height: 20px; /* 按钮高度 */
+  width: 20px; /* 按钮宽度 */
+  position: relative; /* 设置位置为相对，以便使用绝对位置的子元素 */
+}
+
+.full-image-button-sweater {
+  background-size: cover; /* 使背景图像覆盖整个按钮 */
+  background-position: center; /* 将图像居中 */
+  border: none; /* 去掉边框 */
+  height: 60px; /* 按钮高度 */
+  width: 150px; /* 按钮宽度 */
+  position: relative; /* 设置位置为相对，以便使用绝对位置的子元素 */
+}
+
 </style>

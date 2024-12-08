@@ -1,7 +1,12 @@
 <template>
   <el-row :gutter="10" @click="hideMenu">
     <el-col :span="6" class="border-box">
-      <div class="content-grid"></div>
+      <div class="content-grid">
+        <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+          <el-tab-pane label="造型" name="first">造型</el-tab-pane>
+          <el-tab-pane label="声音" name="second">声音</el-tab-pane>
+        </el-tabs>
+      </div>
       <el-button type="primary" @click="addItem">导入物品</el-button>
     </el-col>
     <el-col :span="18" class="border-box">
@@ -12,7 +17,7 @@
           <el-checkbox class="check-button" @click.stop="checkImgItem(item)" v-model="item.checked" size="large" />
         </div>
       </div>
-      <el-button type="primary" @click="removeAll">清空</el-button>
+      <!-- <el-button type="primary" @click="removeAll">清空</el-button> -->
     </el-col>
   </el-row>
 
@@ -22,7 +27,7 @@
       <div icon="icon icon-delete" @click.stop="removeItem(item.uuid)" class="remove-button" title="删除">X</div>
     </div>
   </div> -->
-  <elementDialog v-model="elementDialogVis" :visible="eleVisible" :element="element" :onElementChange="handleElementChange"/>
+  <elementDialog v-model="elementDialogVis" :visible="elementDialogVis" :element="element" :onElementChange="handleElementChange"/>
   <RightClickMenu ref="rightClickMenu" :onElementChange="handleElementChange" :onHandleBagRemove="removeItem"/>
 </template>
 
